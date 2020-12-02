@@ -189,11 +189,15 @@ class ScopusSearch(Search):
             else:
                 view = "STANDARD"
         count = 25
+        max_entries = 5000
         if view == "STANDARD" and subscriber:
             count = 200
         if "cursor" in kwds:
             subscriber = kwds["cursor"]
             kwds.pop("cursor")
+        if "max_entries" in kwds:
+            max_entries = kwds["max_entries"]
+            kwds.pop("max_entries")
         if "count" in kwds:
             count = kwds["count"]
             kwds.pop("count")
@@ -201,7 +205,7 @@ class ScopusSearch(Search):
         # Query
         self.query = query
         Search.__init__(self, query=query, api='ScopusSearch', refresh=refresh,
-                        count=count, cursor=subscriber, view=view,
+                        count=count, cursor=subscriber, view=view, max_entries=max_entries,
                         download=download, verbose=verbose, **kwds)
         self.integrity = integrity_fields or []
         self.action = integrity_action
